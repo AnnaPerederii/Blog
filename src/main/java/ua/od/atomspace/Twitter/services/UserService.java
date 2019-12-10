@@ -10,4 +10,12 @@ public interface UserService {
     Iterable<User> findAll();
 
     User save(User user);
+
+    User findFirstByAge();
+
+    User findDistinctFirstByAge();
+
+    Iterable<User> findAllByAgeBetween(int start, int stop);
+
+    Iterable<User> findAllByFirstNameNotLike(String like);
 }

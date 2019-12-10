@@ -11,4 +11,8 @@ public interface PostService {
     Post save(Post post);
 
     Iterable <Post> findAll();
+
+    Iterable<Post> findAllByTitle(String title);
+
+    Iterable<Post> findTop10ByCreatedAt();
 }

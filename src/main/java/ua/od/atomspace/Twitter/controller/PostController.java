@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ua.od.atomspace.Twitter.dao.models.Post;
-import ua.od.atomspace.Twitter.dao.repos.PostRepository;
 import ua.od.atomspace.Twitter.services.PostService;
 import ua.od.atomspace.Twitter.services.exceptions.ObjectNotFoundException;
 
@@ -13,8 +12,14 @@ import ua.od.atomspace.Twitter.services.exceptions.ObjectNotFoundException;
 @Slf4j
 public class PostController {
 
+    private final PostService postService;
+
     @Autowired
-    private PostService postService;
+    public PostController(PostService postService){
+        this.postService = postService;
+    }
+
+
 
     @GetMapping(path = "/allPosts")
     @ResponseBody
@@ -31,6 +36,7 @@ public class PostController {
         return "Post was created";
     }
 
+    //-
     @PutMapping
     @ResponseBody
     public Post changeTitle(@RequestBody Post post, @RequestParam String title){
@@ -45,5 +51,19 @@ public class PostController {
         Post result = postService.delete(id);
         return "Post was deleted";
     }
+
+    @GetMapping(path = "/searchByTitle/{title}")
+    @ResponseBody
+    public Iterable<Post> findByTitle(@PathVariable String title){
+        return postService.findAllByTitle(title);
+    }
+
+    @GetMapping(path = "/findLast10")
+    @ResponseBody
+    public Iterable<Post> findLast10(){
+        return postService.findTop10ByCreatedAt();
+    }
+
+
 
 }

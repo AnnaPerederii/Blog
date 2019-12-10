@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Builder
 @Data
@@ -15,7 +16,6 @@ import javax.persistence.*;
 @Entity
 //@Table(name = "posts")
 public class Post {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +24,8 @@ public class Post {
 
     private String text;
 
-    private String createdAt;
+    private Date createdAt;
+
+    private Long userId;
 
 }

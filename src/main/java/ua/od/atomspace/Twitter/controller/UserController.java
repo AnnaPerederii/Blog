@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ua.od.atomspace.Twitter.dao.models.User;
-import ua.od.atomspace.Twitter.dao.repos.UserRepository;
 import ua.od.atomspace.Twitter.services.UserService;
 import ua.od.atomspace.Twitter.services.exceptions.ObjectNotFoundException;
 
@@ -13,8 +12,12 @@ import ua.od.atomspace.Twitter.services.exceptions.ObjectNotFoundException;
 @Slf4j
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService){
+        this.userService = userService;
+    }
 
     @GetMapping(path = "/allUsers")
     @ResponseBody
@@ -47,5 +50,27 @@ public class UserController {
         return result;
     }
 
+    @GetMapping(params = {"startAge", "stopAge"})
+    @ResponseBody
+    public Iterable<User> findByAgeBetween(@RequestParam int startAge,@RequestParam int stopAge){
+        return userService.findAllByAgeBetween(startAge,stopAge);
+    }
 
+    @GetMapping(path = "/youngest")
+    @ResponseBody
+    public User findYoungest(){
+        return userService.findFirstByAge();
+    }
+
+    @GetMapping(path = "/oldest")
+    @ResponseBody
+    public User findOldest(){
+        return userService.findDistinctFirstByAge();
+    }
+
+    @GetMapping(path = "/usersWithout/{like}")
+    @ResponseBody
+    public Iterable<User> findUsersLike(@PathVariable String like){
+        return userService.findAllByFirstNameNotLike(like);
+    }
 }

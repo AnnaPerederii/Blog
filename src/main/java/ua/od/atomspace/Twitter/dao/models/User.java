@@ -4,6 +4,7 @@ package ua.od.atomspace.Twitter.dao.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Builder
 @Data
@@ -28,5 +29,5 @@ public class User {
 
     private String password;
 
-    private String createdAt;
+    private Date createdAt;
 }
